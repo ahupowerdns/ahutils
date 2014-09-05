@@ -7,11 +7,10 @@ basic things you need to know. The API itself is documented
 It all starts with an environment, as generated with **mdb\_env\_create()**.
 Once created, this environment must also be opened with **mdb\_env\_open()**.
 
-**mdb\_env\_open()** gets passed a name which is interpreted as a directory, and
-this directory will be created for you if it does not exist yet. Within that
-directory, a lock file and a storage file will be generated. If you don't
-want that, pass MDB\_NOSUBDIR, and a file plus a file with a "-lock"
-extension will be used. 
+**mdb\_env\_open()** gets passed a name which is interpreted as a directory (which must exist already)
+Within that directory, a lock file and a storage file will be generated.  If
+you don't want that, pass MDB\_NOSUBDIR, and a file plus a file with a
+"-lock" extension will be used.
 
 Now that the environment is open, we can generate a transaction within it
 using **mdb\_txn\_begin()**.  Transactions can be nested, but need not be. 
