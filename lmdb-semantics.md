@@ -27,7 +27,7 @@ Now that we have a transaction, within it we can open a database using
 as its name.  For named databases, pass MDB\_CREATE the first time it is
 opened.  Also rember to call **mdb\_env\_set\_maxdbs()** after
 **mdb\_env\_create()** and before **mdb\_env\_open()** to set the maximum
-number of named datbases you want to support.
+number of named databases you want to support.
 
 Note: a single transaction can open multiple databases.
 
@@ -58,7 +58,7 @@ first call to **mdb\_cursor\_get()**, and MDB\_NEXT on subsequent calls,
 until the end is hit.
 
 To retrieve all keys starting from a specified key value, use
-MDB\_SET\_RANGE.  For more cursor operations, see the [API
+MDB\_SET.  For more cursor operations, see the [API
 docs](http://symas.com/mdb/doc/group__mdb.html).
 
 When using **mdb\_cursor\_put()**, either the function will position the
@@ -72,7 +72,7 @@ So we have a cursor in a transaction which opened a database in an
 environment which is opened from a filesystem after it was separately created.
 
 Or, we create an environment, open it from a filesystem, create a
-transaction within it, open datbase within that and create a cursor within
+transaction within it, open database within that and create a cursor within
 all of the above.
 
 Easy, right? 
@@ -130,14 +130,11 @@ To permanently free a transaction, reset or not, call
 **mdb\_txn\_abort()** on it.
 
 # Cleaning up
-It is important to close transactions in order to make database handles
-available again.
-
 If a transaction was not write-capable, any cursors created within it should
 be destroyed manually.
 
-It is very rarely necessary to close a database handle, since it gets closed
-with the transaction.
+It is very rarely necessary to close a database handle, and in general they
+should just be left open.
 
 # Now read up on the full API!
 
