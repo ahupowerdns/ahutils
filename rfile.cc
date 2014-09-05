@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <string>
 #include <errno.h>
+#include <string.h>
 using namespace std;
 
 RFile::RFile(const char* name, const char* mode)
