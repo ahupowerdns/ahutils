@@ -86,7 +86,8 @@ freed, and should not be used anymore.
 
 For read-only transactions, there is no need to commit anything to storage
 of course. The LMDB transaction however should still eventually be
-"committed" or aborted to close the database handle(s) opened in them.
+aborted to close the database handle(s) opened in them, or committed to keep the 
+database handles around for reuse in new transactions.
 
 In addition, as long as a transaction is open, a consistent view of the database
 is kept alive, which requires storage. A read-only transaction that no
@@ -121,6 +122,9 @@ it is possible to only reset and renew a transaction.
 read-only transaction.  To revive this reset transaction, call
 **mdb\_txn\_renew()** on it.  If this is done, and cursors were in use,
 these too must be renewed using **mdb\_cursor\_renew()**.
+
+Note that any databases you opened within the transaction will be closed by 
+**mdb\_txn\_reset()**.
 
 To permanently free a transaction, reset or not, call
 **mdb\_txn\_abort()** on it.
