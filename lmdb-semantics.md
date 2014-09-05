@@ -1,7 +1,7 @@
 # LMDB Semantics
-LMDB is very powerful and fast and implements the BDB-api. This too is very
-powerful, and verbosely documented. In this file, I hope to offer the very
-basic things you need to know. 
+LMDB is very powerful and fast and implements a simplified variant of the
+BDB-api. This too is very powerful, and verbosely documented. In this file,
+I hope to offer the very basic things you need to know. 
 
 This document does not strive to be complete, but it does strive to be very clear
 and direct. Afterwards, the API documentation should make sense. The API
@@ -28,16 +28,20 @@ opened.  Also rember to call **mdb\_env\_set\_maxdbs()** after
 **mdb\_env\_create()** and before **mdb\_env\_open()** to set the maximum
 number of named datbases you want to support.
 
+When opening a database, the transaction should be committed to actually
+save the database and reserve its dbi handle. After this commit the dbi can
+be reused in all subsequent transactions.
+
 Note: a single transaction can open multiple databases.
 
 In this transaction, **mdb\_get()** and **mdb\_put()** can store single key/value pairs
 if that is what you need to do. 
 
-A key/value pair is expressed as a two **MDP\_val** structures. This struct
+A key/value pair is expressed as two **MDB\_val** structures. This struct
 has two attributes, mv\_size and mv\_data. The data is a void pointer to an
 array of mv\_size bytes. 
 
-Because LMDB is very efficient, the data returned in an **MDP\_val** structure
+Because LMDB is very efficient, the data returned in an **MDB\_val** structure
 may be memory mapped straight from disk. In other words, **look but do not
 touch** (or free() for that matter). Once a transaction is closed, the
 values can no longer be used. So make a copy if you need to keep them
@@ -84,6 +88,8 @@ one that could write, all cursors will be freed, and should not be used
 anymore.
 
 For read-only transactions, there is no need to commit them of course.
+(Unless a dbi was opened in this transaction, in which case it should be
+committed to allow the dbi to continue to be used in later transactions.)
 However, as long as a transaction is open, a consistent view of the database
 is kept alive, which requires storage. A read-only transaction that no
 longer requires this consistent view should therefore be reset using
