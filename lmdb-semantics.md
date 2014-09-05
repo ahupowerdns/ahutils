@@ -1,16 +1,20 @@
 # LMDB Semantics
 LMDB is very powerful and fast and implements the BDB-api. This too is very
 powerful, and verbosely documented. In this file, I hope to offer the very
-basic things you need to know. The API itself is documented 
+basic things you need to know. 
+
+This document does not strive to be complete, but it does strive to be very clear
+and direct. Afterwards, the API documentation should make sense. The API
+itself can be found
 [here](http://symas.com/mdb/doc/group__mdb.html#details).
 
 It all starts with an environment, as generated with **mdb\_env\_create()**.
 Once created, this environment must also be opened with **mdb\_env\_open()**.
 
-**mdb\_env\_open()** gets passed a name which is interpreted as a directory (which must exist already)
-Within that directory, a lock file and a storage file will be generated.  If
-you don't want that, pass MDB\_NOSUBDIR, and a file plus a file with a
-"-lock" extension will be used.
+**mdb\_env\_open()** gets passed a name which is interpreted as a directory
+(which must exist already!).  Within that directory, a lock file and a
+storage file will be generated.  If you don't want that, pass MDB\_NOSUBDIR,
+and a file plus a file with a "-lock" extension will be used.
 
 Now that the environment is open, we can generate a transaction within it
 using **mdb\_txn\_begin()**.  Transactions can be nested, but need not be. 
@@ -91,6 +95,11 @@ If this is done, and cursors were in use, these too must be renewed using
 
 Alternatively to free a transaction which has been reset, call
 **mdb\_txn\_abort()** on it too.
+
+There can be multiple simultaneously active read-only transactions (ie, they
+were opened as read-only), but only one that could write. Once a single write-capable
+transaction is opened, all further attempts to open one will block until the first
+one is closed.
 
 # Duplicate keys
 TBD
