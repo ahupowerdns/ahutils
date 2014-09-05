@@ -27,7 +27,7 @@ number of named datbases you want to support.
 
 Note: a single transaction can open multiple databases.
 
-In this transaction, **mdp\_get()** and **mdp\_put()** can store single key/value pairs
+In this transaction, **mdb\_get()** and **mdb\_put()** can store single key/value pairs
 if that is what you need to do. 
 
 A key/value pair is expressed as a two **MDP\_val** structures. This struct
@@ -93,3 +93,8 @@ If this is done, and cursors were in use, these too must be renewed using
 Alternatively to free a transaction which has been reset, call
 **mdb\_txn\_abort()** on it too.
 
+# Duplicate keys
+TBD
+
+# Cleaning up
+TBD
