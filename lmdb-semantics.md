@@ -77,6 +77,21 @@ all of the above.
 
 Easy, right? 
 
+# Threads and processes
+
+LMDB uses POSIX locks on files, and these locks have issues if one process
+opens a file multiple times.  Because of this, do not **mdb\_env\_open()** a
+file multiple times from a single process.  Instead, share the LMDB
+environment that has opened the file across all threads.  
+
+In other words, there must only ever be 1 LMDB environment that has a file
+open.  Don't open the database file in any other way, as closing it will
+destroy the locks held on it!
+
+Also note that a transaction is tied to one thread by default using Thread
+Local Storage.  If you want to pass transactions across threads, read how to
+do so in the links to the full API below (MDB\_NOTLS).
+
 # Transactions, rollbacks etc
 As expected, to get anything actually done, a transaction must be committed
 using **mdb\_txn\_commit()**, or aborted using **mdb\_txn\_abort()**.  If
