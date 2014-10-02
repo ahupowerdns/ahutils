@@ -89,8 +89,8 @@ open.  Don't open the database file in any other way, as closing it will
 destroy the locks held on it!
 
 Also note that a transaction is tied to one thread by default using Thread
-Local Storage.  If you want to pass transactions across threads, read how to
-do so in the links to the full API below (MDB\_NOTLS).
+Local Storage.  If you want to pass read-only transactions across threads,
+find how to do so in the links to the full API below (MDB\_NOTLS).
 
 # Transactions, rollbacks etc
 As expected, to get anything actually done, a transaction must be committed
