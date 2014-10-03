@@ -1,10 +1,10 @@
 -include sysdeps/$(shell uname).inc
 
 VERSION=0.1
-CXXFLAGS?=-Wall -O3 -MMD -MP  -std=gnu++0x  $(CXX2011FLAGS) # -Wno-unused-local-typedefs 
-LDFLAGS=$(CXX2011FLAGS)   
+CXXFLAGS?=-Wall -O3 -MMD -MP  -std=gnu++0x  $(CXX2011FLAGS) -pthread # -Wno-unused-local-typedefs 
+LDFLAGS=$(CXX2011FLAGS) -pthread
 
-PROGRAMS=testrunner lmdbwrap
+PROGRAMS=testrunner ltest
 
 all: $(PROGRAMS)
 
@@ -14,7 +14,7 @@ clean:
 testrunner: rfile.o testrunner.o
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
-lmdbwrap: lmdbwrap.o 
+ltest: lmdbwrap.o ltest.o 
 	$(CXX) $(CXXFLAGS) $^ -llmdb -o $@
 
 
